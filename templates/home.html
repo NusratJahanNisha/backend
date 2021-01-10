@@ -1,0 +1,65 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <title>TRansaction 101</title> 
+</head> 
+<body>
+    <h1>Transactions</h1>
+    <ul>
+        {% for doc in doclist %}
+            <li>{{doc.tid}}: {{doc.sender}} sent {{doc.amount}} to {{doc.reciever}}.</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <h1>Add new transaction</h1>
+    <form action="{% url "add" %}" method="POST">
+        {% csrf_token %}
+        <td>Amount:</td>
+        <td>
+            <input type="number" name="amount">
+        </td>
+        <td>Sender name:</td>
+        <td>
+            <input type="text" name="sender_name">
+        </td>
+        <td>Reciever name:</td>
+        <td>
+            <input type="text" name="reciever_name">
+        </td>
+        <br>
+        <input type="submit" value="Add">
+    </form>
+
+    <h1>Update Transaction</h1>
+    <form action="{% url "update" %}" method="POST">
+        {% csrf_token %}
+        <td>Enter transaction ID to update:</td>
+        <td>
+            <input type="text" name="tid">
+        </td>
+        <br>
+        <td>Amount:</td>
+        <td>
+            <input type="number" name="amount">
+        </td>
+        <td>Sender name:</td>
+        <td>
+            <input type="text" name="sender_name">
+        </td>
+        <br>
+        <input type="submit" value="Update">
+    </form>
+
+    <h1>Delete Transaction</h1>
+    <form action="{% url "delete" %}" method="POST">
+        {% csrf_token %}
+        <td>Enter transaction ID to delete:</td>
+        <td>
+            <input type="text" name="tid">
+        </td>
+        <br>
+        <input type="submit" value="Delete">
+    </form>
+</body> 
+</html>
