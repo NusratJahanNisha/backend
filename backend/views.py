@@ -38,11 +38,16 @@ def update(request):
         else:
             error = True
 
+        if 'reciever_name' in request.POST:
+            reciever_name = request.POST.get("reciever_name")
+        else:
+            error = True
+
         if not error:
             tid_ref = trans_ref.document(tid)
             if tid_ref.get().exists:
-                tid_ref.update({'amount': amount, 'sender': name})
-                return HttpResponse("Document {tid} successfully updated.".format(tid=tid))
+                tid_ref.update({'amount': amount, 'sender': name, 'reciever': reciever_name})
+                return HttpResponse("Document {tid} successfully updated. Please go back and reload the page to see your current changes".format(tid=tid))
             else:
                 return HttpResponse("Document {tid} doesn't exist. Cannot update.".format(tid=tid))
         else:
@@ -88,7 +93,7 @@ def add(request):
                 u'reciever': reciever
             }
             trans_ref.document(tid).set(data)
-            return HttpResponse("Entry Added")
+            return HttpResponse("Your entry is added. Please go back and reload the page to see your added transaction.")
         else:
             return HttpResponse("Error")
             
@@ -110,7 +115,7 @@ def delete(request):
             tid_ref = trans_ref.document(tid)
             if tid_ref.get().exists:
                 tid_ref.delete()
-                return HttpResponse("Document {tid} successfully deleted.".format(tid=tid))
+                return HttpResponse("Document {tid} successfully deleted. Please go back and reload the page to see your current changes".format(tid=tid))
             else:
                 return HttpResponse("Document {tid} doesn't exist. Cannot delete.".format(tid=tid))
         else:
